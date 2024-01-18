@@ -1,0 +1,67 @@
+{
+  "querySpec": {
+    "metrics": [
+      {
+        "name": "service_call_count",
+        "aggregator": "none",
+        "downsample": "0all-sum"
+      },
+      {
+        "name": "time_out_count",
+        "aggregator": "none",
+        "downsample": "0all-sum"
+      },
+      {
+        "name": "error_count",
+        "aggregator": "none",
+        "downsample": "0all-sum"
+      }    ],
+    "tags": {
+      "asset-type": [
+      "http_service"
+      ],
+      "asset-name": [
+        "*"
+      ]
+    }
+  },
+  "renderSpec": {
+    "tier": "SLB",
+    "severityMappings": {
+      "NORMAL": [
+        "service_call_count"
+      ],
+      "WARNING": [
+        "time_out_count"
+      ],
+      "DANGER": [
+        "error_count"
+      ]
+    },
+    "layoutMappings": {
+      "RTL": [
+        "http_service"
+      ]
+    },
+    "levels": {
+       "0": {
+        "name" : "Edge",
+        "rootIdGenerator": "INTERNET",
+        "leafIdGenerator": "asset-type",
+        "layoutBy": "asset-type",
+        "renderer": "GLOBAL"
+      },
+      "1": {
+        "name" : "http service",
+        "rootIdGenerator": "http service",
+        "leafIdGenerator": "domain-name",
+        "layoutBy": "asset-type",
+        "layoutAlgorithm": "ringCenter",
+        "renderer": "REGION"
+      }
+    },
+    "connectLevels" : {
+      "0" : "1"
+    }
+  }
+}

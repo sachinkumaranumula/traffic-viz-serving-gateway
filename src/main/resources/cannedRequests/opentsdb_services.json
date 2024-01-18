@@ -1,0 +1,65 @@
+{
+  "querySpec": {
+    "metrics": [
+      {
+        "name": "service_call_count",
+        "aggregator": "none",
+        "downsample": "0all-sum"
+      },
+      {
+        "name": "time_out_count",
+        "aggregator": "none",
+        "downsample": "0all-sum"
+      },
+      {
+        "name": "error_count",
+        "aggregator": "none",
+        "downsample": "0all-sum"
+      }
+    ],
+    "tags": {
+      "asset-type": [
+        "http_service",
+        "esb_service"
+      ]
+    }
+  },
+  "renderSpec": {
+    "tier": "SLB",
+    "severityMappings": {
+      "NORMAL": [
+        "service_call_count"
+      ],
+      "DANGER": [
+        "time_out_count",
+        "error_count"
+      ]
+    },
+    "layoutMappings": {
+      "RTL": [
+        "esb_service",
+        "http_service"
+      ]
+    },
+    "levels": {
+      "0": {
+        "name": "Edge",
+        "rootIdGenerator": "INTERNET",
+        "leafIdGenerator": "Services",
+        "layoutBy": "asset-type",
+        "renderer": "GLOBAL"
+      },
+      "1": {
+        "name": "Services",
+        "rootIdGenerator": "Services",
+        "leafIdGenerator": "asset-name",
+        "layoutBy": "asset-type",
+        "layoutAlgorithm": "ltrTree",
+        "renderer": "REGION"
+      }
+    },
+    "connectLevels": {
+      "0": "1"
+    }
+  }
+}

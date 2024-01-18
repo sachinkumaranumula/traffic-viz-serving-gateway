@@ -1,0 +1,70 @@
+{
+  "querySpec": {
+    "metrics": [
+      {
+        "name": "jms_inbound_msg_rate",
+        "aggregator": "none",
+        "downsample": "0all-avg"
+      },
+      {
+        "name": "jms_outbound_msg_rate",
+        "aggregator": "none",
+        "downsample": "0all-avg"
+      }
+    ],
+    "tags": {
+      "asset-type": [
+        "tibco_jms_instance"
+      ],
+      "asset-name": [
+        "*"
+      ]
+    }
+  },
+  "renderSpec": {
+    "tier": "JMS",
+    "severityMappings": {
+      "NORMAL": [
+        "jms_inbound_msg_rate",
+        "jms_outbound_msg_rate"
+      ]
+    },
+    "layoutMappings": {
+      "LTR": [
+        "jms_inbound_msg_rate"
+      ],
+      "RTL": [
+        "jms_outbound_msg_rate",
+        "tibco_jms_instance"
+      ]
+    },
+    "levels": {
+      "0": {
+        "name": "Edge",
+        "rootIdGenerator": "INTERNET",
+        "leafIdGenerator": "asset-type",
+        "layoutBy": "asset-type",
+        "renderer": "GLOBAL"
+      },
+      "1": {
+        "name": "tibco jms instance",
+        "rootIdGenerator": "JMS",
+        "leafIdGenerator": "asset-name",
+        "layoutBy": "asset-type",
+        "layoutAlgorithm": "ringCenter",
+        "renderer": "REGION"
+      },
+      "2": {
+        "name": "JMS",
+        "rootIdGenerator": "asset-name",
+        "leafIdGenerator": "metric",
+        "layoutBy": "metric",
+        "renderer": "REGION"
+      }
+    },
+    "connectLevels": {
+      "0": "1",
+      "1": "2"
+    }
+  }
+}

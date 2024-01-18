@@ -1,0 +1,58 @@
+{
+	"querySpec": {
+		"metrics": [
+			{
+				"name": "event_published_count",
+				"aggregator": "none",
+				"downsample": "0all-sum"
+			},
+			{
+				"name": "publishing_error_count",
+				"aggregator": "none",
+				"downsample": "0all-sum"
+			}
+		],
+		"tags": {
+			"asset-type": [
+				"eeb_event"
+			],
+			"asset-name": [
+				"iot/raw-observation-created/1.0",
+				"spatio-temporal-platform/report-observation/1.0"
+			]
+		}
+	},
+	"renderSpec": {
+		"tier": "IOT",
+		"severityMappings": {
+			"NORMAL": [
+				"event_published_count"
+			],
+			"DANGER": [
+				"publishing_error_count"
+			]
+		},
+		"layoutMappings": {
+			"LTR": [
+				"eeb_event"
+			]
+		},
+		"levels": {
+			"0": {
+				"name": "SensorObs",
+				"rootIdGenerator": "SensorObs",
+				"leafIdGenerator": "asset-name",
+				"layoutBy": "asset-type",
+				"layoutAlgorithm": "ltrTree",
+				"renderer": "REGION"
+			}
+		},
+		"layoutOverrides": {
+			"SensorObs": "GeoSpatial"
+		},
+		"idOverrides": {
+			"iot/raw-observation-created/1 0": "Raw Ping",
+			"spatio-temporal-platform/report-observation/1 0": "ST Obs"
+		}
+	}
+}

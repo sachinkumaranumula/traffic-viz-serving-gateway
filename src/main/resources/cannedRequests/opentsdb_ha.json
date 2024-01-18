@@ -1,0 +1,90 @@
+{
+  "querySpec": {
+    "metrics": [
+      {
+        "name": "haproxy_hrsp_2xx",
+        "counter": true,
+        "aggregator": "none"
+      },
+      {
+        "name": "haproxy_hrsp_3xx",
+        "counter": true,
+        "aggregator": "none"
+      },
+      {
+        "name": "haproxy_hrsp_4xx",
+        "counter": true,
+        "aggregator": "none"
+      },
+      {
+        "name": "haproxy_hrsp_5xx",
+        "counter": true,
+        "aggregator": "none"
+      }
+    ],
+    "tags": {
+      "asset-type": [
+        "haproxy_frontend",
+        "haproxy_backend"
+      ],
+      "asset-name": [
+        "esb2*"
+      ],
+      "host-name": [
+        "*"
+      ]
+    }
+  },
+  "renderSpec": {
+    "tier": "HAProxy",
+    "severityMappings": {
+      "NORMAL": [
+        "haproxy_hrsp_2xx",
+        "haproxy_hrsp_3xx"
+      ],
+      "WARNING": [
+        "haproxy_hrsp_4xx"
+      ],
+      "DANGER": [
+        "haproxy_hrsp_5xx"
+      ]
+    },
+    "layoutMappings": {
+      "LTR": [
+        "haproxy_frontend"
+      ],
+      "RTL": [
+        "haproxy_backend"
+      ]
+    },
+    "postAggregator": "DIFF",
+    "levels": {
+      "0": {
+        "name": "Edge",
+        "rootIdGenerator": "SLB",
+        "leafIdGenerator": "asset-type",
+        "layoutBy": "asset-type",
+        "layoutAlgorithm": "ltrTree",
+        "renderer": "GLOBAL"
+      },
+      "1": {
+        "name": "SLB",
+        "rootIdGenerator": "HAProxy",
+        "leafIdGenerator": "asset-name",
+        "layoutBy": "asset-type",
+        "renderer": "REGION"
+      },
+      "2": {
+        "name": "HAProxy",
+        "rootIdGenerator": "host-name",
+        "leafIdGenerator": "asset-name",
+        "layoutBy": "asset-type",
+        "renderer": "REGION"
+      }
+    },
+    "connectLevels": {
+      "0": "1",
+      "1": "2"
+    }
+  }
+}
